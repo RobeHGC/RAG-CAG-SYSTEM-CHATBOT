@@ -1,0 +1,41 @@
+# Core dependencies
+telethon==1.36.0
+fastapi==0.115.5
+uvicorn[standard]==0.34.0
+python-dotenv==1.0.1
+pydantic==2.10.4
+pydantic-settings==2.7.0
+
+# Database dependencies
+redis==5.2.1
+neo4j==5.26.0
+psycopg2-binary==2.9.10
+sqlalchemy==2.0.36
+
+# ML/NLP dependencies
+spacy==3.8.3
+numpy==1.26.4
+pandas==2.2.3
+
+# Task queue
+celery==5.4.0
+flower==2.0.1
+
+# Utilities
+pyyaml==6.0.2
+python-json-logger==3.2.1
+httpx==0.28.1
+aiofiles==24.1.0
+
+# Development dependencies
+pytest==8.3.4
+pytest-asyncio==0.25.0
+pytest-cov==6.0.0
+black==24.10.0
+flake8==7.1.1
+mypy==1.14.1
+ipython==8.31.0
+
+# Type stubs
+types-redis==4.6.0.20241212
+types-pyyaml==6.0.12.20241230

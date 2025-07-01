@@ -1,0 +1,116 @@
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  default:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  detailed:
+    format: '%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(funcName)s() - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  json:
+    class: pythonjsonlogger.jsonlogger.JsonFormatter
+    format: '%(asctime)s %(name)s %(levelname)s %(filename)s %(lineno)d %(funcName)s %(message)s'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: default
+    stream: ext://sys.stdout
+  
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: logs/bot_provisional.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf-8
+  
+  error_file:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: detailed
+    filename: logs/errors.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf-8
+  
+  json_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: logs/bot_provisional.json
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf-8
+
+loggers:
+  # Userbot logger
+  src.userbot:
+    level: INFO
+    handlers: [console, file, json_file]
+    propagate: false
+  
+  # Orquestador logger
+  src.orquestador:
+    level: INFO
+    handlers: [console, file, json_file]
+    propagate: false
+  
+  # Memoria logger
+  src.memoria:
+    level: INFO
+    handlers: [console, file, json_file]
+    propagate: false
+  
+  # Verificador logger
+  src.verificador:
+    level: INFO
+    handlers: [console, file, json_file]
+    propagate: false
+  
+  # Dashboard logger
+  src.dashboard:
+    level: INFO
+    handlers: [console, file, json_file]
+    propagate: false
+  
+  # Common/Config logger
+  src.common:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  
+  # Third-party loggers
+  telethon:
+    level: WARNING
+    handlers: [console, file]
+    propagate: false
+  
+  fastapi:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  
+  uvicorn:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  
+  redis:
+    level: WARNING
+    handlers: [console, file]
+    propagate: false
+  
+  neo4j:
+    level: WARNING
+    handlers: [console, file]
+    propagate: false
+
+root:
+  level: INFO
+  handlers: [console, file, error_file]

@@ -62,3 +62,6 @@ Thumbs.db
 bot_token.txt
 api_keys.txt
 EOF < /dev/null
+
+#bitacora
+bitacora/*
