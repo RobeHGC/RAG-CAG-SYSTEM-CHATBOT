@@ -26,11 +26,16 @@ Para más detalles, consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## 📋 Requisitos del Sistema
 
+### Con Docker (recomendado) 🐳
+- Docker 20.10+
+- Docker Compose 2.0+
+- 4GB RAM mínimo, 8GB recomendado
+
+### Instalación Local
 - Python 3.10 o superior
 - PostgreSQL 14+
 - Redis 7+
 - Neo4j 5+
-- Docker y Docker Compose (opcional pero recomendado)
 
 ## 🚀 Instalación Rápida
 
@@ -71,11 +76,23 @@ nano .env  # o tu editor preferido
 
 ### 5. Configurar bases de datos
 
-#### Opción A: Con Docker (recomendado)
+#### Opción A: Con Docker (recomendado) 🐳
 
 ```bash
-# Próximamente en Fase 2
+# Desarrollo: Levantar todos los servicios básicos
 docker-compose up -d
+
+# O solo las bases de datos
+docker-compose up -d postgres redis neo4j
+
+# Desarrollo con hot-reload
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+# Ver logs
+docker-compose logs -f
+
+# Parar servicios
+docker-compose down
 ```
 
 #### Opción B: Instalación manual
@@ -86,20 +103,43 @@ docker-compose up -d
 
 ## 🏃 Ejecutar el Proyecto
 
-### Userbot de Telegram
+### Con Docker (recomendado) 🐳
+
+```bash
+# Desarrollo completo (todos los servicios)
+docker-compose --profile full up -d
+
+# Solo servicios básicos (sin userbot/celery)
+docker-compose up -d
+
+# Con monitoring (incluye Flower para Celery)
+docker-compose --profile monitoring up -d
+
+# Producción
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# Acceder a los servicios:
+# - Dashboard: http://localhost:8000
+# - Neo4j Browser: http://localhost:7474
+# - Flower (monitoring): http://localhost:5555
+```
+
+### Instalación Local (sin Docker)
+
+#### Userbot de Telegram
 
 ```bash
 python -m src.userbot
 ```
 
-### Dashboard de Gestión
+#### Dashboard de Gestión
 
 ```bash
 python -m src.dashboard
 # Acceder en: http://localhost:8000
 ```
 
-### Orquestador Central
+#### Orquestador Central
 
 ```bash
 python -m src.orquestador
@@ -153,6 +193,94 @@ flake8 src/
 
 # Type checking
 mypy src/
+```
+
+## 🐳 Docker - Guía Completa
+
+### Configuraciones Disponibles
+
+1. **Desarrollo básico**: Solo bases de datos
+   ```bash
+   docker-compose up -d postgres redis neo4j
+   ```
+
+2. **Desarrollo completo**: Todos los servicios con hot-reload
+   ```bash
+   docker-compose -f docker-compose.yml -f docker-compose.dev.yml --profile full up -d
+   ```
+
+3. **Producción**: Optimizado para deployment
+   ```bash
+   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+   ```
+
+### Comandos Útiles
+
+```bash
+# Ver estado de los servicios
+docker-compose ps
+
+# Logs de todos los servicios
+docker-compose logs -f
+
+# Logs de un servicio específico
+docker-compose logs -f app
+
+# Reiniciar un servicio
+docker-compose restart app
+
+# Reconstruir imágenes
+docker-compose build --no-cache
+
+# Limpiar volúmenes (¡CUIDADO: borra datos!)
+docker-compose down -v
+
+# Ejecutar comandos dentro del contenedor
+docker-compose exec app python -m pytest
+docker-compose exec postgres psql -U postgres -d bot_provisional
+```
+
+### Puertos Expuestos
+
+- **Dashboard**: http://localhost:8000
+- **PostgreSQL**: localhost:5432
+- **Redis**: localhost:6379
+- **Neo4j HTTP**: http://localhost:7474
+- **Neo4j Bolt**: bolt://localhost:7687
+- **Flower** (monitoring): http://localhost:5555
+
+### Volúmenes Persistentes
+
+- `bot_postgres_data`: Datos de PostgreSQL
+- `bot_redis_data`: Datos de Redis
+- `bot_neo4j_data`: Datos de Neo4j
+- `bot_app_logs`: Logs de la aplicación
+- `bot_userbot_sessions`: Sesiones de Telegram
+
+### Troubleshooting
+
+**Problema**: Los servicios no se conectan
+```bash
+# Verificar la red
+docker network ls
+docker network inspect bot_provisional_network
+
+# Reiniciar la red
+docker-compose down && docker-compose up -d
+```
+
+**Problema**: Permisos de archivos
+```bash
+# Cambiar ownership (Linux/Mac)
+sudo chown -R $USER:$USER logs/ data/
+```
+
+**Problema**: Base de datos no inicializa
+```bash
+# Limpiar volumen de PostgreSQL y reiniciar
+docker-compose down
+docker volume rm bot_postgres_data
+docker-compose up -d postgres
 ```
 
 ## 📚 Documentación

@@ -1,0 +1,47 @@
+version: '3.8'
+
+# Development overrides for docker-compose.yml
+services:
+  app:
+    build:
+      target: development
+    volumes:
+      - .:/app  # Enable hot reloading in development
+    environment:
+      - DEBUG=true
+      - DASHBOARD_RELOAD=true
+    command: ["uvicorn", "src.dashboard.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  userbot:
+    volumes:
+      - .:/app  # Enable hot reloading
+    environment:
+      - DEBUG=true
+
+  celery_worker:
+    volumes:
+      - .:/app  # Enable hot reloading
+    environment:
+      - DEBUG=true
+    command: ["celery", "-A", "src.common.celery_app", "worker", "--loglevel=debug", "--autoreload"]
+
+  # Development database with exposed port for direct access
+  postgres:
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: bot_provisional_dev
+
+  # Development Redis with no password for easier access
+  redis:
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+
+  # Development Neo4j with default password
+  neo4j:
+    environment:
+      NEO4J_AUTH: neo4j/development
+    ports:
+      - "7474:7474"
+      - "7687:7687"
