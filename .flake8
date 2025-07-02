@@ -1,0 +1,114 @@
+[flake8]
+# Base flake8 configuration for Bot Provisional project
+
+# Maximum line length to match black configuration
+max-line-length = 88
+
+# Maximum complexity for functions
+max-complexity = 10
+
+# Files and directories to exclude
+exclude = 
+    .git,
+    __pycache__,
+    .tox,
+    .eggs,
+    *.egg,
+    venv,
+    .venv,
+    build,
+    dist,
+    logs,
+    data,
+    htmlcov,
+    .coverage,
+    .pytest_cache,
+    .mypy_cache
+
+# Error codes to ignore
+ignore = 
+    # Line break before binary operator (conflicts with black)
+    W503,
+    # Line break after binary operator (conflicts with black) 
+    W504,
+    # Line too long (handled by black)
+    E501,
+    # Multiple spaces after operator (conflicts with black alignment)
+    E221,
+    # Multiple spaces before operator (conflicts with black alignment)
+    E222,
+    # Missing whitespace around arithmetic operator (conflicts with black)
+    E226,
+    # Missing whitespace around bitwise or shift operator (conflicts with black)
+    E227,
+    # Multiple spaces after ':' (conflicts with black)
+    E241,
+    # Inline comment should start with '# ' (too restrictive)
+    E262,
+    # Multiple spaces after keyword (conflicts with black)
+    E271,
+    # Multiple spaces after operator (conflicts with black)
+    E272,
+    # Unexpected spaces around keyword / parameter equals (conflicts with black)
+    E251
+
+# Error codes to specifically check (enable all by default)
+select = 
+    E,
+    W,
+    F,
+    C
+
+# Per-file ignores for specific cases
+per-file-ignores =
+    # Test files can have longer lines for readability
+    tests/*.py:E501
+    # Scripts can have some flexibility
+    scripts/*.py:E501
+    # __init__.py files can be empty
+    __init__.py:F401
+
+# Docstring conventions (following Google style)
+docstring-convention = google
+
+# Import order checking (delegated to isort)
+import-order-style = google
+
+# Additional flake8 plugins configuration
+# flake8-bugbear
+extend-ignore = 
+    # zip() without an explicit strict= parameter
+    B905
+
+# flake8-comprehensions - encourage list/dict/set comprehensions
+# (no additional config needed, uses defaults)
+
+# flake8-docstrings - docstring checking
+# D100: Missing docstring in public module
+# D101: Missing docstring in public class  
+# D102: Missing docstring in public method
+# D103: Missing docstring in public function
+# D104: Missing docstring in public package
+# D105: Missing docstring in magic method
+# D106: Missing docstring in public nested class
+# D107: Missing docstring in __init__
+extend-ignore-docstring = 
+    D100,
+    D101,
+    D102,
+    D103,
+    D104,
+    D105,
+    D106,
+    D107
+
+# Specific settings for different file types
+[flake8:local-plugins]
+paths = 
+    src,
+    tests,
+    scripts
+
+# Application import checking
+application-import-names = src
+application-package-names = src

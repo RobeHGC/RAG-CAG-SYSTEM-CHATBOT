@@ -1,5 +1,13 @@
 # Bot Provisional 🤖
 
+[![CI](https://github.com/RobeHGC/bot_provisional/workflows/CI/badge.svg)](https://github.com/RobeHGC/bot_provisional/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/RobeHGC/bot_provisional/branch/main/graph/badge.svg)](https://codecov.io/gh/RobeHGC/bot_provisional)
+[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Un chatbot de compañía con memoria persistente y coherencia verificada, diseñado para mantener conversaciones naturales y consistentes a lo largo del tiempo.
 
 ## 🎯 Visión del Proyecto
@@ -23,6 +31,33 @@ El sistema está compuesto por varios módulos interconectados:
 - **Base de datos de Fine-tuning**: Almacena conversaciones curadas para mejorar el modelo
 
 Para más detalles, consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## 🔧 Calidad de Código y CI/CD
+
+Este proyecto implementa un pipeline completo de integración continua para garantizar la calidad del código:
+
+### 🛠️ Herramientas de Calidad
+- **Black**: Formateo automático de código
+- **isort**: Ordenamiento de imports
+- **flake8**: Linting con plugins adicionales
+- **mypy**: Verificación de tipos
+- **bandit**: Análisis de seguridad
+- **pytest**: Testing con cobertura de código
+
+### 🚀 Pipeline CI/CD
+- **Pre-commit hooks**: Verificaciones locales antes de cada commit
+- **GitHub Actions**: Pipeline automático en PRs y pushes
+- **Coverage reporting**: Reportes de cobertura automáticos
+- **Dependabot**: Actualizaciones automáticas de dependencias
+- **Security scanning**: Análisis de vulnerabilidades
+
+### 📊 Métricas de Calidad
+- **Cobertura de código**: >20% actual, objetivo 80%
+- **Type coverage**: Verificación de tipos con mypy
+- **Security**: Zero issues de alta severidad
+- **Dependencies**: Actualizaciones semanales automáticas
+
+Para más detalles, consulta [docs/CI_CD_SETUP.md](docs/CI_CD_SETUP.md).
 
 ## 📋 Requisitos del Sistema
 
@@ -149,13 +184,26 @@ python -m src.orquestador
 
 ```bash
 # Ejecutar todos los tests
+make test
+# o
 pytest
 
 # Con coverage
+make coverage
+# o
 pytest --cov=src
 
 # Tests específicos
 pytest tests/test_imports.py -v
+
+# Tests por categoría
+make test-unit          # Solo tests unitarios
+make test-integration   # Solo tests de integración
+make test-db           # Solo tests de base de datos
+
+# Pipeline CI completo local
+make ci                # Lint + Type check + Tests + Coverage
+make ci-local          # Simular pipeline completo de CI
 ```
 
 ## 🛠️ Desarrollo
@@ -178,22 +226,53 @@ bot_provisional/
 └── bitacora/         # Documentación del proyecto
 ```
 
-### Estilo de Código
+### Estilo de Código y Calidad
 
-- Usamos `black` para formateo automático
-- `flake8` para linting
-- `mypy` para type checking
+El proyecto utiliza herramientas automatizadas para mantener la calidad del código:
 
+#### Pre-commit Hooks (recomendado)
+```bash
+# Instalar pre-commit hooks (automático en make setup)
+make pre-commit-install
+
+# Ejecutar hooks en todos los archivos
+make pre-commit
+
+# Los hooks se ejecutan automáticamente en cada commit
+```
+
+#### Comandos Individuales
 ```bash
 # Formatear código
-black src/
+make format
+# o
+black src/ tests/ scripts/
 
 # Verificar estilo
-flake8 src/
+make lint
+# o
+flake8 src/ tests/ scripts/
 
 # Type checking
-mypy src/
+make type-check
+# o
+mypy src/ tests/ scripts/
+
+# Verificar imports
+isort --check-only src/ tests/ scripts/
+
+# Análisis de seguridad
+bandit -r src/
+
+# Pipeline completo de calidad
+make quality-gate      # Formato + Lint + Types + Coverage
 ```
+
+#### Configuración
+
+- **pyproject.toml**: Configuración central para la mayoría de herramientas
+- **.flake8**: Configuración específica de flake8
+- **.pre-commit-config.yaml**: Configuración de hooks pre-commit
 
 ## 🐳 Docker - Guía Completa
 
@@ -286,6 +365,8 @@ docker-compose up -d postgres
 ## 📚 Documentación
 
 - [Arquitectura del Sistema](docs/ARCHITECTURE.md)
+- [CI/CD y Pipeline de Calidad](docs/CI_CD_SETUP.md) 🆕
+- [Guía de Uso de Scripts](docs/SCRIPTS_USAGE.md)
 - [Visión General del Proyecto](bitacora/VISION_GENERAL.md)
 - [API Reference](docs/api/) (próximamente)
 - [Guía de Contribución](CONTRIBUTING.md) (próximamente)

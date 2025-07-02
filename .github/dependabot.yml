@@ -1,0 +1,129 @@
+# Dependabot configuration for Bot Provisional
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+
+updates:
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "RobeHGC"
+    assignees:
+      - "RobeHGC"
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    # Group minor and patch updates together to reduce PR noise
+    groups:
+      production-dependencies:
+        patterns:
+          - "telethon"
+          - "fastapi"
+          - "uvicorn"
+          - "redis"
+          - "neo4j"
+          - "psycopg2-binary"
+          - "sqlalchemy"
+          - "celery"
+          - "spacy"
+          - "numpy"
+          - "pandas"
+        update-types:
+          - "minor"
+          - "patch"
+      development-dependencies:
+        patterns:
+          - "pytest*"
+          - "black"
+          - "flake8*"
+          - "mypy"
+          - "pre-commit"
+          - "isort"
+          - "bandit"
+          - "safety"
+          - "ruff"
+        update-types:
+          - "minor"
+          - "patch"
+    # Ignore specific packages that need manual updates
+    ignore:
+      - dependency-name: "spacy"
+        update-types: ["version-update:semver-major"]  # Major spaCy updates need model updates
+      - dependency-name: "sqlalchemy"
+        update-types: ["version-update:semver-major"]  # Major SQLAlchemy updates need migration review
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "10:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "RobeHGC"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Docker dependencies
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "RobeHGC"
+    labels:
+      - "dependencies"
+      - "docker"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+    # Only allow minor and patch updates for Docker images
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # Pre-commit hooks
+  - package-ecosystem: "github-actions"
+    directory: "/.pre-commit-config.yaml"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "RobeHGC"
+    labels:
+      - "dependencies"
+      - "pre-commit"
+    commit-message:
+      prefix: "pre-commit"
+      include: "scope"

@@ -1,7 +1,7 @@
 # Bot Provisional - Makefile
 # Common commands for development workflow
 
-.PHONY: help setup dev test clean reset lint format install docker logs health populate
+.PHONY: help setup dev test clean reset lint format install docker logs health populate ci pre-commit coverage type-check
 
 # Default target
 help:
@@ -17,6 +17,12 @@ help:
 	@echo "  test          Run all tests"
 	@echo "  lint          Run code linting"
 	@echo "  format        Format code with black"
+	@echo ""
+	@echo "CI/CD & Quality:"
+	@echo "  ci            Run full CI pipeline locally"
+	@echo "  coverage      Generate coverage report"
+	@echo "  type-check    Run type checking with mypy"
+	@echo "  pre-commit    Setup and run pre-commit hooks"
 	@echo ""
 	@echo "Docker & Services:"
 	@echo "  docker        Start Docker services"
@@ -246,3 +252,124 @@ profile:
 benchmark:
 	@echo "⚡ Running benchmarks..."
 	@echo "Benchmarks not implemented yet"
+
+# CI/CD Pipeline targets
+ci: clean lint type-check test coverage
+	@echo "✅ CI pipeline completed successfully!"
+
+coverage:
+	@echo "📊 Generating coverage report..."
+	python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=xml --cov-report=html
+	@echo "Coverage report generated in htmlcov/"
+
+coverage-html:
+	@echo "📊 Generating HTML coverage report..."
+	python -m pytest tests/ --cov=src --cov-report=html
+	@echo "HTML coverage report available at htmlcov/index.html"
+
+type-check:
+	@echo "🔍 Running type checks with mypy..."
+	@if command -v mypy >/dev/null 2>&1; then \
+		mypy src/ tests/ scripts/; \
+	else \
+		echo "⚠️ mypy not found, install with: pip install mypy"; \
+	fi
+
+# Enhanced lint target
+lint-all: lint type-check
+	@echo "🔍 Running comprehensive linting..."
+
+# Pre-commit hooks
+pre-commit-install:
+	@echo "🔧 Installing pre-commit hooks..."
+	@if command -v pre-commit >/dev/null 2>&1; then \
+		pre-commit install; \
+		pre-commit install --hook-type commit-msg; \
+		echo "✅ Pre-commit hooks installed"; \
+	else \
+		echo "⚠️ pre-commit not found, install with: pip install pre-commit"; \
+	fi
+
+pre-commit:
+	@echo "🔧 Running pre-commit hooks..."
+	@if command -v pre-commit >/dev/null 2>&1; then \
+		pre-commit run --all-files; \
+	else \
+		echo "⚠️ pre-commit not found, install with: pip install pre-commit"; \
+		echo "Running manual checks instead..."; \
+		$(MAKE) lint type-check format; \
+	fi
+
+pre-commit-update:
+	@echo "🔄 Updating pre-commit hooks..."
+	@if command -v pre-commit >/dev/null 2>&1; then \
+		pre-commit autoupdate; \
+	else \
+		echo "⚠️ pre-commit not found, install with: pip install pre-commit"; \
+	fi
+
+# Security scanning
+security:
+	@echo "🔒 Running security scan..."
+	@if command -v bandit >/dev/null 2>&1; then \
+		bandit -r src/ -f json -o security-report.json; \
+		bandit -r src/; \
+	else \
+		echo "⚠️ bandit not found, install with: pip install bandit"; \
+	fi
+
+# Dependency checking
+deps-check:
+	@echo "🔍 Checking dependencies for security issues..."
+	@if command -v safety >/dev/null 2>&1; then \
+		safety check; \
+	else \
+		echo "⚠️ safety not found, install with: pip install safety"; \
+	fi
+
+# Test variants for CI
+test-unit:
+	@echo "🧪 Running unit tests..."
+	python -m pytest tests/ -m "not integration and not database" -v
+
+test-integration:
+	@echo "🔗 Running integration tests..."
+	python -m pytest tests/ -m "integration" -v
+
+test-all-verbose:
+	@echo "🧪 Running all tests with verbose output..."
+	python -m pytest tests/ -v --tb=short
+
+# CI environment simulation
+ci-local: clean
+	@echo "🚀 Running full CI pipeline locally..."
+	@echo "Step 1: Installing dependencies..."
+	$(MAKE) install
+	@echo "Step 2: Code formatting check..."
+	black --check src/ tests/ scripts/
+	@echo "Step 3: Import sorting check..."
+	@if command -v isort >/dev/null 2>&1; then \
+		isort --check-only src/ tests/ scripts/; \
+	fi
+	@echo "Step 4: Linting..."
+	$(MAKE) lint
+	@echo "Step 5: Type checking..."
+	$(MAKE) type-check
+	@echo "Step 6: Security scanning..."
+	$(MAKE) security || echo "Security scan completed with warnings"
+	@echo "Step 7: Running tests with coverage..."
+	$(MAKE) coverage
+	@echo "✅ Local CI pipeline completed!"
+
+# Quality gates
+quality-gate:
+	@echo "🚦 Running quality gate checks..."
+	@echo "Checking code coverage..."
+	python -m pytest tests/ --cov=src --cov-fail-under=20
+	@echo "Checking code formatting..."
+	black --check src/ tests/ scripts/
+	@echo "Checking imports..."
+	@if command -v isort >/dev/null 2>&1; then \
+		isort --check-only src/ tests/ scripts/; \
+	fi
+	@echo "✅ Quality gate passed!"

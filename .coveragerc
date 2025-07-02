@@ -1,0 +1,104 @@
+# Coverage configuration for Bot Provisional project
+# Note: Main configuration is in pyproject.toml, this provides overrides
+
+[run]
+# Source code to analyze
+source = src
+
+# Files to omit from coverage
+omit = 
+    */tests/*
+    */venv/*
+    */__pycache__/*
+    */logs/*
+    */data/*
+    */htmlcov/*
+    setup.py
+    */site-packages/*
+    */.venv/*
+    */build/*
+    */dist/*
+
+# Enable branch coverage
+branch = True
+
+# Include subprocess coverage
+concurrency = multiprocessing
+parallel = True
+
+# Coverage data file
+data_file = .coverage
+
+[report]
+# When reporting, exclude these lines
+exclude_lines =
+    # Standard pragma
+    pragma: no cover
+    
+    # Don't complain about missing debug-only code
+    def __repr__
+    if self\.debug
+    if settings\.DEBUG
+    
+    # Don't complain if tests don't hit defensive assertion code
+    raise AssertionError
+    raise NotImplementedError
+    
+    # Don't complain if non-runnable code isn't run
+    if 0:
+    if False:
+    if __name__ == .__main__.:
+    
+    # Don't complain about abstract methods
+    @(abc\.)?abstractmethod
+    
+    # Don't complain about type checking imports
+    if TYPE_CHECKING:
+    
+    # Don't complain about protocol classes
+    class .*\bProtocol\):
+    
+    # Don't complain about async context managers
+    async def __aenter__
+    async def __aexit__
+
+# Ignore errors in coverage calculation
+ignore_errors = True
+
+# Show missing lines in report
+show_missing = True
+
+# Number of decimal places for percentages
+precision = 2
+
+# Minimum coverage percentage (fail if below this)
+fail_under = 20
+
+# Skip empty files
+skip_empty = True
+
+# Skip files covered at 100%
+skip_covered = False
+
+[html]
+# Directory for HTML coverage report
+directory = htmlcov
+
+# Title for HTML report
+title = Bot Provisional Coverage Report
+
+[xml]
+# XML coverage report output file
+output = coverage.xml
+
+[json]
+# JSON coverage report output file
+output = coverage.json
+pretty_print = True
+
+# Coverage paths mapping for CI environments
+[paths]
+source = 
+    src/
+    */site-packages/
+    */dist-packages/
