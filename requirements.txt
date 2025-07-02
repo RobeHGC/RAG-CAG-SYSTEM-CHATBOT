@@ -1,6 +1,6 @@
 # Core dependencies
-telethon==1.36.0
-fastapi==0.115.5
+telethon==1.40.0
+fastapi==0.115.14
 uvicorn[standard]==0.34.0
 python-dotenv==1.0.1
 pydantic==2.10.4
@@ -8,17 +8,17 @@ pydantic-settings==2.7.0
 
 # Database dependencies
 redis==5.2.1
-neo4j==5.26.0
+neo4j==5.28.1
 psycopg2-binary==2.9.10
-sqlalchemy==2.0.36
+sqlalchemy==2.0.41
 
 # ML/NLP dependencies
-spacy==3.8.3
+spacy==3.8.7
 numpy==1.26.4
-pandas==2.2.3
+pandas==2.3.0
 
 # Task queue
-celery==5.4.0
+celery==5.5.3
 flower==2.0.1
 
 # Utilities
