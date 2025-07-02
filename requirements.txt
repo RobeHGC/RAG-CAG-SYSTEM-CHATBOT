@@ -3,7 +3,7 @@ telethon==1.40.0
 fastapi==0.115.14
 uvicorn[standard]==0.34.0
 python-dotenv==1.0.1
-pydantic==2.11.7
+pydantic==2.9.2
 pydantic-settings==2.7.0
 
 # Database dependencies
