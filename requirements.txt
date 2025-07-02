@@ -28,26 +28,26 @@ httpx==0.28.1
 aiofiles==24.1.0
 
 # Development dependencies
-pytest==8.3.4
+pytest==8.4.1
 pytest-asyncio==0.25.0
-pytest-cov==6.0.0
+pytest-cov==6.2.1
 black==24.10.0
-flake8==7.1.1
-mypy==1.14.1
+flake8==7.3.0
+mypy==1.16.1
 ipython==8.31.0
 
 # Code quality and CI/CD tools
-pre-commit==4.0.1
+pre-commit==4.2.0
 isort==5.13.2
-bandit==1.8.0
-safety==3.2.11
-ruff==0.8.4
+bandit==1.8.5
+safety==3.5.2
+ruff==0.12.1
 
 # Additional flake8 plugins
-flake8-bugbear==24.10.31
+flake8-bugbear==24.12.12
 flake8-comprehensions==3.16.0
 flake8-docstrings==1.7.0
-flake8-import-order==0.18.2
+flake8-import-order==0.19.2
 
 # Type stubs
 types-redis==4.6.0.20241212
