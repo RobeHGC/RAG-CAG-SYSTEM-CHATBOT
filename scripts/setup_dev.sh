@@ -106,6 +106,63 @@ print('✓ Logging configured successfully')
     exit 1
 }
 
+# Test database utilities
+print_status "Testing database utilities..."
+python -c "
+from src.common.database import DatabaseManager
+db_manager = DatabaseManager()
+print('✓ Database utilities imported successfully')
+db_manager.close_all()
+" || {
+    print_error "Failed to import database utilities"
+    exit 1
+}
+
+# Check Docker availability for database setup
+if command -v docker &> /dev/null && command -v docker-compose &> /dev/null; then
+    print_status "Docker and Docker Compose are available"
+    
+    # Check if databases should be automatically started
+    echo ""
+    read -p "Do you want to start the databases with Docker? (y/N): " start_databases
+    
+    if [ "$start_databases" = "y" ] || [ "$start_databases" = "Y" ]; then
+        print_status "Starting databases with Docker Compose..."
+        
+        # Start databases in detached mode
+        docker-compose up -d postgres redis neo4j || {
+            print_error "Failed to start databases"
+            print_warning "You can start them manually later with: docker-compose up -d"
+        }
+        
+        # Wait a moment for databases to start
+        print_status "Waiting for databases to initialize..."
+        sleep 10
+        
+        # Test database connections
+        print_status "Testing database connections..."
+        python scripts/check_connections.py --quiet || {
+            print_warning "Database connection test failed"
+            print_warning "Databases might still be starting up"
+            print_warning "You can test connections later with: python scripts/check_connections.py"
+        }
+        
+        # Initialize databases if they're available
+        print_status "Checking if databases need initialization..."
+        python scripts/init_databases.py || {
+            print_warning "Database initialization failed or skipped"
+            print_warning "You can initialize manually later with: python scripts/init_databases.py"
+        }
+    else
+        print_warning "Skipping database startup"
+        print_warning "To start databases later, run: docker-compose up -d"
+    fi
+else
+    print_warning "Docker or Docker Compose not found"
+    print_warning "Databases need to be set up manually"
+    print_warning "Please install Docker and Docker Compose, then run: docker-compose up -d"
+fi
+
 # Summary
 echo ""
 echo "========================================"
@@ -115,8 +172,18 @@ echo ""
 echo "Next steps:"
 echo "1. Activate the virtual environment: source venv/bin/activate"
 echo "2. Configure your .env file with the required values"
-echo "3. Set up your databases (PostgreSQL, Redis, Neo4j)"
+echo "3. If databases weren't started automatically:"
+echo "   - Start databases: docker-compose up -d"
+echo "   - Test connections: python scripts/check_connections.py"
+echo "   - Initialize databases: python scripts/init_databases.py"
 echo "4. Run tests: pytest"
-echo "5. Start developing!"
+echo "5. Run database tests: pytest tests/test_databases.py"
+echo "6. Start developing!"
+echo ""
+echo "Database management commands:"
+echo "- Check database health: python scripts/check_connections.py"
+echo "- Initialize databases: python scripts/init_databases.py"
+echo "- Run migrations: python scripts/migrate_database.py --action migrate"
+echo "- View migration status: python scripts/migrate_database.py --action status"
 echo ""
 print_warning "Don't forget to configure your Telegram API credentials in .env!"
