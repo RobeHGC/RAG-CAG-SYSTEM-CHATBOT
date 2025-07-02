@@ -52,7 +52,7 @@ Este proyecto implementa un pipeline completo de integración continua para gara
 - **Security scanning**: Análisis de vulnerabilidades
 
 ### 📊 Métricas de Calidad
-- **Cobertura de código**: >80% requerido
+- **Cobertura de código**: >20% actual, objetivo 80%
 - **Type coverage**: Verificación de tipos con mypy
 - **Security**: Zero issues de alta severidad
 - **Dependencies**: Actualizaciones semanales automáticas

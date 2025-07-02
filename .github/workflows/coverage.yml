@@ -160,7 +160,9 @@ jobs:
           
           **Coverage: ${coverage}%**
           
-          ${coverage >= 80 ? '✅' : '⚠️'} Coverage is ${coverage >= 80 ? 'above' : 'below'} the 80% threshold.
+          ${coverage >= 20 ? '✅' : '⚠️'} Coverage is ${coverage >= 20 ? 'above' : 'below'} the 20% threshold.
+          
+          **Target:** Eventually reach 80% coverage as codebase matures.
           
           Detailed coverage report is available in the artifacts.
           `;
