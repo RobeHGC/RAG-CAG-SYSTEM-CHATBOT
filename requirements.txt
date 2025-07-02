@@ -50,5 +50,5 @@ flake8-docstrings==1.7.0
 flake8-import-order==0.19.2
 
 # Type stubs
-types-redis==4.6.0.20241212
+types-redis==4.6.0.20241004
 types-pyyaml==6.0.12.20241230
