@@ -1,399 +1,256 @@
-# Bot Provisional 🤖
+# Nadia AI Companion 🤖
 
-[![CI](https://github.com/RobeHGC/bot_provisional/workflows/CI/badge.svg)](https://github.com/RobeHGC/bot_provisional/actions/workflows/ci.yml)
-[![Coverage](https://codecov.io/gh/RobeHGC/bot_provisional/branch/main/graph/badge.svg)](https://codecov.io/gh/RobeHGC/bot_provisional)
+[![CI](https://github.com/RobeHGC/nadia-ai-companion/workflows/CI/badge.svg)](https://github.com/RobeHGC/nadia-ai-companion/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/RobeHGC/nadia-ai-companion/branch/main/graph/badge.svg)](https://codecov.io/gh/RobeHGC/nadia-ai-companion)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Un chatbot de compañía con memoria persistente y coherencia verificada, diseñado para mantener conversaciones naturales y consistentes a lo largo del tiempo.
+An advanced AI companion with emotional-spatial-temporal memory system. Meet Nadia, a 24-year-old medical student from Monterrey who maintains persistent memory, emotional understanding, and coherent personality across conversations.
 
-## 🎯 Visión del Proyecto
+## 🎯 Project Vision
 
-Este proyecto trasciende los límites de los chatbots convencionales para crear un compañero digital creíble y persistente. No es un simple asistente de preguntas y respuestas, sino una entidad con:
+This project transcends conventional chatbots to create a believable and persistent digital companion. Nadia is not just a Q&A assistant, but an entity with:
 
-- **Personalidad definida**: Mantiene consistencia en su forma de comunicarse
-- **Memoria persistente**: Recuerda interacciones pasadas y aprende del usuario
-- **Coherencia verificada**: Valida sus propias respuestas para evitar contradicciones
-- **Supervisión humana**: Sistema transparente con capacidad de mejora continua
+- **Defined Personality**: Consistent communication style and character traits
+- **Persistent Memory**: Remembers past interactions and learns from users
+- **Emotional Intelligence**: VAD (Valence-Arousal-Dominance) analysis and emotional weighting
+- **Coherence Verification**: Validates responses to avoid contradictions
+- **Human Supervision**: Transparent system with continuous improvement capabilities
 
-## 🏗️ Arquitectura
+## 🏗️ Architecture
 
-El sistema está compuesto por varios módulos interconectados:
+The system consists of several interconnected modules:
 
-- **Userbot de Telegram**: Interfaz de comunicación con el usuario
-- **Orquestador Central**: Coordina todos los componentes del sistema
-- **Sistema de Memoria**: Caché (Redis) + Grafo de conocimiento (Neo4j)
-- **Agente Verificador de Coherencia**: Valida las respuestas antes de enviarlas
-- **Dashboard de Gestión**: Interfaz web para supervisión y curación
-- **Base de datos de Fine-tuning**: Almacena conversaciones curadas para mejorar el modelo
+- **Telegram Userbot**: Communication interface with users
+- **Central Orchestrator**: Coordinates all system components
+- **Memory System**: Cache (Redis) + Knowledge Graph (Neo4j)
+- **Coherence Verification Agent**: Validates responses before sending
+- **Management Dashboard**: Web interface for supervision and curation
+- **Fine-tuning Database**: Stores curated conversations for model improvement
 
-Para más detalles, consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+### Key Features
 
-## 🔧 Calidad de Código y CI/CD
+- **Multi-level Memory**: Short-term (Redis) + Long-term (Neo4j graph)
+- **Emotional Analysis**: Real-time VAD emotion detection
+- **Spreading Activation**: Emotionally-weighted memory retrieval
+- **Memory Consolidation**: Episodic → Semantic memory transformation
+- **Adaptive Forgetting**: Emotional modulation of memory retention
+- **Contextual Retrieval**: GraphRAG with emotional weighting
 
-Este proyecto implementa un pipeline completo de integración continua para garantizar la calidad del código:
+## 🔧 Technical Stack
 
-### 🛠️ Herramientas de Calidad
-- **Black**: Formateo automático de código
-- **isort**: Ordenamiento de imports
-- **flake8**: Linting con plugins adicionales
-- **mypy**: Verificación de tipos
-- **bandit**: Análisis de seguridad
-- **pytest**: Testing con cobertura de código
+- **Backend**: Python 3.10+, FastAPI, Celery
+- **Databases**: PostgreSQL, Redis, Neo4j
+- **AI/ML**: Gemini 2.0 Flash, RoBERTa VAD, all-MiniLM-L6-v2
+- **Message Queue**: Celery with Redis broker
+- **Containerization**: Docker & Docker Compose
+- **Code Quality**: Black, isort, flake8, mypy, pytest
 
-### 🚀 Pipeline CI/CD
-- **Pre-commit hooks**: Verificaciones locales antes de cada commit
-- **GitHub Actions**: Pipeline automático en PRs y pushes
-- **Coverage reporting**: Reportes de cobertura automáticos
-- **Dependabot**: Actualizaciones automáticas de dependencias
-- **Security scanning**: Análisis de vulnerabilidades
+## 📋 System Requirements
 
-### 📊 Métricas de Calidad
-- **Cobertura de código**: >20% actual, objetivo 80%
-- **Type coverage**: Verificación de tipos con mypy
-- **Security**: Zero issues de alta severidad
-- **Dependencies**: Actualizaciones semanales automáticas
-
-Para más detalles, consulta [docs/CI_CD_SETUP.md](docs/CI_CD_SETUP.md).
-
-## 📋 Requisitos del Sistema
-
-### Con Docker (recomendado) 🐳
+### With Docker (Recommended) 🐳
 - Docker 20.10+
 - Docker Compose 2.0+
-- 4GB RAM mínimo, 8GB recomendado
+- 4GB RAM minimum, 8GB recommended
 
-### Instalación Local
-- Python 3.10 o superior
+### Local Installation
+- Python 3.10+
 - PostgreSQL 14+
 - Redis 7+
 - Neo4j 5+
 
-## 🚀 Instalación Rápida
+## 🚀 Quick Start
 
-### 1. Clonar el repositorio
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/RobeHGC/bot_provisional.git
-cd bot_provisional
+git clone https://github.com/RobeHGC/nadia-ai-companion.git
+cd nadia-ai-companion
 ```
 
-### 2. Configurar el entorno
+### 2. Environment Setup
 
 ```bash
-# Ejecutar el script de setup (crea venv e instala dependencias)
+# Run setup script (creates venv and installs dependencies)
 ./scripts/setup_dev.sh
 
-# O manualmente:
+# Or manually:
 python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Configurar variables de entorno
+### 3. Configure Environment Variables
 
 ```bash
-# Copiar el archivo de ejemplo
+# Copy example file
 cp .env.example .env
 
-# Editar con tus valores
-nano .env  # o tu editor preferido
+# Edit with your values
+nano .env  # or your preferred editor
 ```
 
-### 4. Configurar Telegram API
+### 4. Configure Telegram API
 
-1. Ve a https://my.telegram.org/apps
-2. Crea una nueva aplicación
-3. Copia el `API ID` y `API Hash` a tu archivo `.env`
+1. Go to https://my.telegram.org/apps
+2. Create a new application
+3. Copy `API ID` and `API Hash` to your `.env` file
 
-### 5. Configurar bases de datos
-
-#### Opción A: Con Docker (recomendado) 🐳
+### 5. Start with Docker (Recommended)
 
 ```bash
-# Desarrollo: Levantar todos los servicios básicos
+# Development: Start all basic services
 docker-compose up -d
 
-# O solo las bases de datos
-docker-compose up -d postgres redis neo4j
-
-# Desarrollo con hot-reload
+# Full development with hot-reload
 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
-# Ver logs
-docker-compose logs -f
-
-# Parar servicios
-docker-compose down
-```
-
-#### Opción B: Instalación manual
-
-- **PostgreSQL**: Instalar y crear la base de datos `bot_provisional`
-- **Redis**: Instalar y ejecutar con configuración por defecto
-- **Neo4j**: Instalar y configurar con las credenciales del `.env`
-
-## 🏃 Ejecutar el Proyecto
-
-### Con Docker (recomendado) 🐳
-
-```bash
-# Desarrollo completo (todos los servicios)
-docker-compose --profile full up -d
-
-# Solo servicios básicos (sin userbot/celery)
-docker-compose up -d
-
-# Con monitoring (incluye Flower para Celery)
-docker-compose --profile monitoring up -d
-
-# Producción
+# Production deployment
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
-# Acceder a los servicios:
+# Access services:
 # - Dashboard: http://localhost:8000
 # - Neo4j Browser: http://localhost:7474
 # - Flower (monitoring): http://localhost:5555
 ```
 
-### Instalación Local (sin Docker)
-
-#### Userbot de Telegram
+## 🧪 Testing
 
 ```bash
-python -m src.userbot
-```
-
-#### Dashboard de Gestión
-
-```bash
-python -m src.dashboard
-# Acceder en: http://localhost:8000
-```
-
-#### Orquestador Central
-
-```bash
-python -m src.orquestador
-```
-
-## 🧪 Tests
-
-```bash
-# Ejecutar todos los tests
+# Run all tests
 make test
-# o
+# or
 pytest
 
-# Con coverage
+# With coverage
 make coverage
-# o
+# or
 pytest --cov=src
 
-# Tests específicos
-pytest tests/test_imports.py -v
+# Specific test categories
+make test-unit          # Unit tests only
+make test-integration   # Integration tests only
+make test-db           # Database tests only
 
-# Tests por categoría
-make test-unit          # Solo tests unitarios
-make test-integration   # Solo tests de integración
-make test-db           # Solo tests de base de datos
-
-# Pipeline CI completo local
+# Full CI pipeline locally
 make ci                # Lint + Type check + Tests + Coverage
-make ci-local          # Simular pipeline completo de CI
 ```
 
-## 🛠️ Desarrollo
+## 🛠️ Development
 
-### Estructura del Proyecto
+### Project Structure
 
 ```
-bot_provisional/
-├── src/               # Código fuente
-│   ├── userbot/      # Bot de Telegram
-│   ├── orquestador/  # Coordinador central
-│   ├── memoria/      # Sistema de memoria
-│   ├── verificador/  # Agente de coherencia
-│   ├── dashboard/    # Interfaz web
-│   └── common/       # Utilidades compartidas
-├── tests/            # Tests unitarios e integración
-├── docs/             # Documentación
-├── scripts/          # Scripts de utilidad
-├── config/           # Archivos de configuración
-└── bitacora/         # Documentación del proyecto
+nadia-ai-companion/
+├── src/               # Source code
+│   ├── userbot/      # Telegram bot
+│   ├── orquestador/  # Central coordinator
+│   ├── memoria/      # Memory system
+│   ├── verificador/  # Coherence agent
+│   ├── dashboard/    # Web interface
+│   └── common/       # Shared utilities
+├── tests/            # Unit & integration tests
+├── docs/             # Documentation
+├── scripts/          # Utility scripts
+├── config/           # Configuration files
+└── bitacora/         # Project documentation
 ```
 
-### Estilo de Código y Calidad
+### Code Quality
 
-El proyecto utiliza herramientas automatizadas para mantener la calidad del código:
-
-#### Pre-commit Hooks (recomendado)
 ```bash
-# Instalar pre-commit hooks (automático en make setup)
+# Install pre-commit hooks
 make pre-commit-install
 
-# Ejecutar hooks en todos los archivos
-make pre-commit
-
-# Los hooks se ejecutan automáticamente en cada commit
-```
-
-#### Comandos Individuales
-```bash
-# Formatear código
+# Format code
 make format
-# o
-black src/ tests/ scripts/
 
-# Verificar estilo
+# Lint code
 make lint
-# o
-flake8 src/ tests/ scripts/
 
 # Type checking
 make type-check
-# o
-mypy src/ tests/ scripts/
 
-# Verificar imports
-isort --check-only src/ tests/ scripts/
-
-# Análisis de seguridad
-bandit -r src/
-
-# Pipeline completo de calidad
-make quality-gate      # Formato + Lint + Types + Coverage
+# Full quality gate
+make quality-gate
 ```
 
-#### Configuración
+## 🐳 Docker Usage
 
-- **pyproject.toml**: Configuración central para la mayoría de herramientas
-- **.flake8**: Configuración específica de flake8
-- **.pre-commit-config.yaml**: Configuración de hooks pre-commit
+### Available Configurations
 
-## 🐳 Docker - Guía Completa
-
-### Configuraciones Disponibles
-
-1. **Desarrollo básico**: Solo bases de datos
+1. **Basic Development**: Databases only
    ```bash
    docker-compose up -d postgres redis neo4j
    ```
 
-2. **Desarrollo completo**: Todos los servicios con hot-reload
+2. **Full Development**: All services with hot-reload
    ```bash
-   docker-compose -f docker-compose.yml -f docker-compose.dev.yml --profile full up -d
+   docker-compose --profile full up -d
    ```
 
-3. **Producción**: Optimizado para deployment
+3. **Production**: Optimized for deployment
    ```bash
    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
    ```
 
-### Comandos Útiles
-
-```bash
-# Ver estado de los servicios
-docker-compose ps
-
-# Logs de todos los servicios
-docker-compose logs -f
-
-# Logs de un servicio específico
-docker-compose logs -f app
-
-# Reiniciar un servicio
-docker-compose restart app
-
-# Reconstruir imágenes
-docker-compose build --no-cache
-
-# Limpiar volúmenes (¡CUIDADO: borra datos!)
-docker-compose down -v
-
-# Ejecutar comandos dentro del contenedor
-docker-compose exec app python -m pytest
-docker-compose exec postgres psql -U postgres -d bot_provisional
-```
-
-### Puertos Expuestos
+### Exposed Ports
 
 - **Dashboard**: http://localhost:8000
 - **PostgreSQL**: localhost:5432
 - **Redis**: localhost:6379
 - **Neo4j HTTP**: http://localhost:7474
 - **Neo4j Bolt**: bolt://localhost:7687
-- **Flower** (monitoring): http://localhost:5555
+- **Flower**: http://localhost:5555
 
-### Volúmenes Persistentes
+## 📚 Documentation
 
-- `bot_postgres_data`: Datos de PostgreSQL
-- `bot_redis_data`: Datos de Redis
-- `bot_neo4j_data`: Datos de Neo4j
-- `bot_app_logs`: Logs de la aplicación
-- `bot_userbot_sessions`: Sesiones de Telegram
+- [System Architecture](docs/ARCHITECTURE.md)
+- [Implementation Guide](bitacora/GUIA_COMPLETA.md)
+- [Quick Configuration](bitacora/configuracion_rapida.md)
+- [Memory System](bitacora/memoria/MEMORIA.md)
+- [Deployment Guide](bitacora/deployment_guide.md)
 
-### Troubleshooting
+## 🎯 Current Status
 
-**Problema**: Los servicios no se conectan
-```bash
-# Verificar la red
-docker network ls
-docker network inspect bot_provisional_network
+**Phase 2: Advanced Memory Implementation**
+- ✅ Infrastructure setup complete
+- ✅ Database schemas configured
+- ⚡ Implementing VAD emotional analysis
+- ⚡ Building spreading activation system
+- ⚡ Creating memory consolidation pipeline
+- ⚡ Developing dashboard interface
 
-# Reiniciar la red
-docker-compose down && docker-compose up -d
-```
+### Roadmap
 
-**Problema**: Permisos de archivos
-```bash
-# Cambiar ownership (Linux/Mac)
-sudo chown -R $USER:$USER logs/ data/
-```
+- **Phase 1**: ✅ MVP Infrastructure (Completed)
+- **Phase 2**: 🔄 Advanced Memory System (In Progress)
+- **Phase 3**: 🔄 Optimization & Scaling (Planned)
+- **Phase 4**: 🔮 Advanced Features (Future)
 
-**Problema**: Base de datos no inicializa
-```bash
-# Limpiar volumen de PostgreSQL y reiniciar
-docker-compose down
-docker volume rm bot_postgres_data
-docker-compose up -d postgres
-```
+## 🤝 Contributing
 
-## 📚 Documentación
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-- [Arquitectura del Sistema](docs/ARCHITECTURE.md)
-- [CI/CD y Pipeline de Calidad](docs/CI_CD_SETUP.md) 🆕
-- [Guía de Uso de Scripts](docs/SCRIPTS_USAGE.md)
-- [Visión General del Proyecto](bitacora/VISION_GENERAL.md)
-- [API Reference](docs/api/) (próximamente)
-- [Guía de Contribución](CONTRIBUTING.md) (próximamente)
+## 📄 License
 
-## 🤝 Contribuir
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Este es un proyecto en desarrollo activo. Si quieres contribuir:
+## 👥 Team
 
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+- **Roberto H.** - Lead Developer
 
-## 📄 Licencia
+## 🔗 Links
 
-Este proyecto está bajo desarrollo privado. Todos los derechos reservados.
-
-## 👥 Equipo
-
-- Roberto H. - Desarrollador Principal
-
-## 🔗 Enlaces
-
-- [Issues](https://github.com/RobeHGC/bot_provisional/issues)
-- [Roadmap](https://github.com/RobeHGC/bot_provisional/projects) (próximamente)
+- [Issues](https://github.com/RobeHGC/nadia-ai-companion/issues)
+- [Discussions](https://github.com/RobeHGC/nadia-ai-companion/discussions)
+- [Wiki](https://github.com/RobeHGC/nadia-ai-companion/wiki)
 
 ---
 
-**Estado del Proyecto**: 🚧 En desarrollo - Sprint 0 (Foundation & Setup)
+**Project Status**: 🚧 In Development - Phase 2 (Advanced Memory System)
