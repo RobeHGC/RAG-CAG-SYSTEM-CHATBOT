@@ -48,7 +48,8 @@ class Settings(BaseSettings):
     # LLM settings
     openai_api_key: Optional[str] = Field(default=None, description="OpenAI API key")
     anthropic_api_key: Optional[str] = Field(default=None, description="Anthropic API key")
-    default_llm_provider: str = Field(default="openai", description="Default LLM provider")
+    gemini_api_key: Optional[str] = Field(default=None, description="Gemini API key")
+    default_llm_provider: str = Field(default="gemini", description="Default LLM provider")
     
     # Dashboard settings
     dashboard_host: str = Field(default="0.0.0.0", description="Dashboard host")

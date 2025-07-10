@@ -17,7 +17,8 @@ spacy==3.8.7
 numpy==1.26.4
 pandas==2.3.0
 transformers==4.45.2
-torch>=2.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+sentence-transformers==3.3.1
+torch>=2.6.0
 scipy==1.14.1
 regex>=2024.0.0
 tokenizers>=0.20.0,<0.21.0
