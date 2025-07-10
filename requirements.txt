@@ -16,6 +16,14 @@ sqlalchemy==2.0.41
 spacy==3.8.7
 numpy==1.26.4
 pandas==2.3.0
+transformers==4.45.2
+torch>=2.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+scipy==1.14.1
+regex>=2024.0.0
+tokenizers>=0.20.0,<0.21.0
+huggingface-hub>=0.16.0
+safetensors>=0.4.0
+numpy>=1.24.0,<2.0.0
 
 # Task queue
 celery==5.5.3
