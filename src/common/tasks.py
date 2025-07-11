@@ -6,6 +6,13 @@ Background tasks for memory consolidation and processing.
 import logging
 from celery import shared_task
 
+# Import memory consolidation tasks
+from src.memoria.consolidation import (
+    consolidate_user_memories,
+    schedule_consolidations,
+    check_consolidation_health
+)
+
 # Setup logger
 logger = logging.getLogger(__name__)
 

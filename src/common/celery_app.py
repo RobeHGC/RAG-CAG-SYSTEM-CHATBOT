@@ -16,7 +16,7 @@ celery_app = Celery(
     'bot_provisional',
     broker=f'redis://{settings.redis_host}:{settings.redis_port}/1',
     backend=f'redis://{settings.redis_host}:{settings.redis_port}/2',
-    include=['src.common.tasks']
+    include=['src.common.tasks', 'src.memoria.consolidation']
 )
 
 # Configure Celery
@@ -31,6 +31,17 @@ celery_app.conf.update(
     task_soft_time_limit=25 * 60,  # 25 minutes
     worker_prefetch_multiplier=1,
     worker_max_tasks_per_child=1000,
+    # Beat schedule for periodic tasks
+    beat_schedule={
+        'consolidate-memories-hourly': {
+            'task': 'schedule_consolidations',
+            'schedule': 3600.0,  # Every hour
+        },
+        'health-check-5min': {
+            'task': 'check_consolidation_health',
+            'schedule': 300.0,  # Every 5 minutes
+        },
+    },
 )
 
 logger.info("Celery app configured successfully")
