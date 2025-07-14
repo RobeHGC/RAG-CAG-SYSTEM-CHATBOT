@@ -1,0 +1,156 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "AI Companion - System Metrics",
+    "tags": ["ai-companion", "system", "infrastructure"],
+    "style": "dark",
+    "timezone": "browser",
+    "refresh": "30s",
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "CPU Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "100 - (avg by(instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+            "legendFormat": "{{instance}} CPU Usage"
+          }
+        ],
+        "yAxes": [
+          {"label": "CPU %", "min": 0, "max": 100}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Memory Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+            "legendFormat": "{{instance}} Memory Usage"
+          }
+        ],
+        "yAxes": [
+          {"label": "Memory %", "min": 0, "max": 100}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Disk Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "(node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100",
+            "legendFormat": "{{instance}} {{mountpoint}}"
+          }
+        ],
+        "yAxes": [
+          {"label": "Disk %", "min": 0, "max": 100}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+      },
+      {
+        "id": 4,
+        "title": "Network I/O",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(node_network_receive_bytes_total[5m])",
+            "legendFormat": "{{instance}} {{device}} RX"
+          },
+          {
+            "expr": "rate(node_network_transmit_bytes_total[5m])",
+            "legendFormat": "{{instance}} {{device}} TX"
+          }
+        ],
+        "yAxes": [
+          {"label": "Bytes/sec", "min": 0}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "Load Average",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "node_load1",
+            "legendFormat": "{{instance}} 1m load"
+          },
+          {
+            "expr": "node_load5",
+            "legendFormat": "{{instance}} 5m load"
+          },
+          {
+            "expr": "node_load15",
+            "legendFormat": "{{instance}} 15m load"
+          }
+        ],
+        "yAxes": [
+          {"label": "Load", "min": 0}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}
+      },
+      {
+        "id": 6,
+        "title": "Disk I/O",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(node_disk_read_bytes_total[5m])",
+            "legendFormat": "{{instance}} {{device}} Read"
+          },
+          {
+            "expr": "rate(node_disk_written_bytes_total[5m])",
+            "legendFormat": "{{instance}} {{device}} Write"
+          }
+        ],
+        "yAxes": [
+          {"label": "Bytes/sec", "min": 0}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}
+      },
+      {
+        "id": 7,
+        "title": "Redis Metrics",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "redis_connected_clients",
+            "legendFormat": "Connected Clients"
+          },
+          {
+            "expr": "redis_memory_used_bytes / 1024 / 1024",
+            "legendFormat": "Memory Usage (MB)"
+          }
+        ],
+        "yAxes": [
+          {"label": "Count / MB", "min": 0}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24}
+      },
+      {
+        "id": 8,
+        "title": "Container Metrics",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(container_cpu_usage_seconds_total[5m]) * 100",
+            "legendFormat": "{{name}} CPU %"
+          }
+        ],
+        "yAxes": [
+          {"label": "CPU %", "min": 0}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24}
+      }
+    ]
+  }
+}

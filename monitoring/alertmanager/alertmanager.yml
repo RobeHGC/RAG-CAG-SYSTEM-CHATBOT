@@ -1,0 +1,168 @@
+global:
+  smtp_smarthost: 'localhost:587'
+  smtp_from: 'alerts@ai-companion.com'
+  smtp_auth_username: 'alerts@ai-companion.com'
+  smtp_auth_password: 'your_email_password'
+  slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+
+route:
+  group_by: ['alertname', 'service']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'web.hook'
+  routes:
+    # Critical alerts go to multiple channels
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 10s
+      repeat_interval: 30m
+    
+    # Warning alerts go to standard channels
+    - match:
+        severity: warning
+      receiver: 'warning-alerts'
+      group_wait: 30s
+      repeat_interval: 1h
+    
+    # Database specific alerts
+    - match:
+        service: redis
+      receiver: 'database-team'
+    - match:
+        service: postgresql
+      receiver: 'database-team'
+    
+    # System alerts to ops team
+    - match:
+        service: system
+      receiver: 'ops-team'
+    
+    # Application alerts to dev team
+    - match:
+        service: ai-companion
+      receiver: 'dev-team'
+
+receivers:
+  - name: 'web.hook'
+    webhook_configs:
+      - url: 'http://localhost:8001/alerts/webhook'
+        send_resolved: true
+
+  - name: 'critical-alerts'
+    email_configs:
+      - to: 'oncall@ai-companion.com'
+        subject: '[CRITICAL] AI Companion Alert: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Severity: {{ .Labels.severity }}
+          Service: {{ .Labels.service }}
+          Time: {{ .StartsAt }}
+          {{ end }}
+        headers:
+          Priority: 'high'
+    
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/CRITICAL/WEBHOOK'
+        channel: '#critical-alerts'
+        username: 'AI Companion Alerting'
+        icon_emoji: ':fire:'
+        title: 'Critical Alert'
+        text: |
+          {{ range .Alerts }}
+          *{{ .Annotations.summary }}*
+          {{ .Annotations.description }}
+          Service: {{ .Labels.service }}
+          {{ end }}
+        send_resolved: true
+
+  - name: 'warning-alerts'
+    email_configs:
+      - to: 'team@ai-companion.com'
+        subject: '[WARNING] AI Companion Alert: {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Severity: {{ .Labels.severity }}
+          Service: {{ .Labels.service }}
+          Time: {{ .StartsAt }}
+          {{ end }}
+    
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/WARNING/WEBHOOK'
+        channel: '#alerts'
+        username: 'AI Companion Alerting'
+        icon_emoji: ':warning:'
+        title: 'Warning Alert'
+        text: |
+          {{ range .Alerts }}
+          *{{ .Annotations.summary }}*
+          {{ .Annotations.description }}
+          Service: {{ .Labels.service }}
+          {{ end }}
+        send_resolved: true
+
+  - name: 'database-team'
+    email_configs:
+      - to: 'database-team@ai-companion.com'
+        subject: '[DATABASE] AI Companion Database Alert'
+        body: |
+          Database Alert Details:
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Database: {{ .Labels.service }}
+          Severity: {{ .Labels.severity }}
+          Time: {{ .StartsAt }}
+          {{ end }}
+
+  - name: 'ops-team'
+    email_configs:
+      - to: 'ops-team@ai-companion.com'
+        subject: '[OPS] AI Companion System Alert'
+        body: |
+          System Alert Details:
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Severity: {{ .Labels.severity }}
+          Time: {{ .StartsAt }}
+          {{ end }}
+
+  - name: 'dev-team'
+    email_configs:
+      - to: 'dev-team@ai-companion.com'
+        subject: '[DEV] AI Companion Application Alert'
+        body: |
+          Application Alert Details:
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Severity: {{ .Labels.severity }}
+          Time: {{ .StartsAt }}
+          {{ end }}
+
+inhibit_rules:
+  # Inhibit warning alerts if critical alert is firing for the same service
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['service', 'alertname']
+
+  # Inhibit database alerts if the application is down
+  - source_match:
+      alertname: 'ApplicationDown'
+    target_match:
+      service: 'redis'
+    equal: ['instance']
+
+  - source_match:
+      alertname: 'ApplicationDown'
+    target_match:
+      service: 'postgresql'
+    equal: ['instance']
