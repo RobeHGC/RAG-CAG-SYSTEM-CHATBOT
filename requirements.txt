@@ -82,4 +82,4 @@ flake8-import-order==0.19.2
 
 # Type stubs
 types-redis==4.6.0.20241004
-types-pyyaml==6.0.12.20241230
+types-pyyaml==6.0.12.20250516
