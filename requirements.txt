@@ -1,6 +1,6 @@
 # Core dependencies
 telethon==1.40.0
-fastapi==0.115.14
+fastapi==0.116.1
 uvicorn[standard]==0.35.0
 python-dotenv==1.1.1
 pydantic==2.9.2
@@ -15,7 +15,7 @@ sqlalchemy==2.0.41
 # ML/NLP dependencies
 spacy==3.8.7
 numpy==1.26.4
-pandas==2.3.0
+pandas==2.3.1
 transformers==4.45.2
 sentence-transformers==3.3.1
 torch>=2.6.0
