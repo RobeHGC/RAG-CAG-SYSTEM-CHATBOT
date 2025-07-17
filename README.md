@@ -1,5 +1,6 @@
-#context
-the project actually is incomplete and truncated. I'll leave the issues to give context to people who want to make use of this in near future. Good luck.
+# context
+the project actually is incomplete and truncated. I'll leave the issues to give context to people who want to make use of this in near future. 
+I'll leave the .md implementation guides in the "bitacora". Good luck.
 # Nadia AI Companion 🤖
 
 [![CI](https://github.com/RobeHGC/nadia-ai-companion/workflows/CI/badge.svg)](https://github.com/RobeHGC/nadia-ai-companion/actions/workflows/ci.yml)
