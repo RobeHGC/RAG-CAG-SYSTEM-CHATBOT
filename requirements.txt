@@ -45,7 +45,7 @@ prometheus-client==0.17.1
 grafana-api==1.0.3
 elasticsearch==8.10.0
 loguru==0.7.2
-sentry-sdk==1.38.0
+sentry-sdk==2.41.0
 
 # Utilities
 pyyaml==6.0.2
