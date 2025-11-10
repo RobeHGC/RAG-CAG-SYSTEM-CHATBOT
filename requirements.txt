@@ -56,7 +56,7 @@ aiofiles==24.1.0
 # WebSocket and real-time communication
 websockets==14.1
 python-multipart==0.0.12
-jinja2==3.1.5
+jinja2==3.1.6
 
 # Development dependencies
 pytest==8.4.1
